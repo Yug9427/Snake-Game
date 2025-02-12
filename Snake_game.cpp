@@ -46,7 +46,7 @@ public:
                 if (i == y && j == x)
                     cout << "O";
                 else if (i == fruitY && j == fruitX)
-                    cout << "F";
+                    cout << "*";
                 else {
                     bool print = false;
                     for (size_t k = 0; k < tailX.size(); k++) {
