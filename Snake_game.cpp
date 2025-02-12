@@ -5,7 +5,7 @@
 
 using namespace std;
 
-enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
+enum eDirection { STOP, LEFT, RIGHT, UP, DOWN };
 
 class SnakeGame {
 private:
