@@ -16,11 +16,6 @@ private:
     enum Direction { STOP, LEFT, RIGHT, UP, DOWN };
     Direction dir;
 
-    void GotoXY(int x, int y) {
-        COORD coord = { (SHORT)x, (SHORT)y };
-        SetConsoleCursorPosition(console, coord);
-    }
-
     void HideCursor() {
         CONSOLE_CURSOR_INFO cursorInfo;
         GetConsoleCursorInfo(console, &cursorInfo);
@@ -42,7 +37,8 @@ private:
     }
 
     void Draw() {
-        GotoXY(0, 0);
+        COORD coord = {0,0};
+        SetConsoleCursorPosition(console, coord);
 
         for (int i = 0; i < width + 2; i++) cout << "# ";
         cout << endl;
@@ -77,11 +73,19 @@ private:
     void Input() {
         if (_kbhit()) {
             switch (_getch()) {
-                case 'a': case 'A': dir = LEFT; break;
-                case 'd': case 'D': dir = RIGHT; break;
-                case 'w': case 'W': dir = UP; break;
-                case 's': case 'S': dir = DOWN; break;
-                case 'x': gameOver = true; break;
+                case 'a': case 'A': 
+                    if(dir!=RIGHT)dir = LEFT;
+                    break;
+                case 'd': case 'D':
+                    if(dir!=LEFT)dir = RIGHT; 
+                    break;
+                case 'w': case 'W':
+                    if(dir!=DOWN) dir = UP; 
+                    break;
+                case 's': case 'S':
+                    if(dir!=UP) dir = DOWN; 
+                    break;
+                case 'x': case 'X': gameOver = true; break;
             }
         }
     }
@@ -91,7 +95,7 @@ private:
         int prev2X, prev2Y;
         snake[0] = {x, y};
 
-        for (size_t i = 1; i < snake.size(); i++) {
+        for (int i = 1; i < snake.size(); i++) {
             prev2X = snake[i].first;
             prev2Y = snake[i].second;
             snake[i] = {prevX, prevY};
@@ -108,7 +112,7 @@ private:
         }
 
         if (x < 0 || x >= width || y < 0 || y >= height) gameOver = true;
-        for (size_t i = 1; i < snake.size(); i++) {
+        for (int i = 1; i < snake.size(); i++) {
             if (snake[i].first == x && snake[i].second == y) gameOver = true;
         }
 
@@ -121,11 +125,13 @@ private:
                 validFoodPosition = true;
                 foodX = rand() % width;
                 foodY = rand() % height;
-
-                for (const auto& segment : snake) {
-                    if (segment.first == foodX && segment.second == foodY) {
-                        validFoodPosition = false;
-                        break;
+                if(foodX==x && foodY==y) validFoodPosition = 0;
+                else{
+                    for (const auto& segment : snake) {
+                        if (segment.first == foodX && segment.second == foodY) {
+                            validFoodPosition = false;
+                            break;
+                        }
                     }
                 }
             } while (!validFoodPosition);
