@@ -32,11 +32,11 @@ This is a simple console-based Snake game implemented in C++. The game features 
 2. Navigate to the project directory.
 3. Compile the program using a C++ compiler:
    ```sh
-   g++ snake_game.cpp -o snake_game.exe
+   g++ Snake_game.cpp -o Snake_game.exe
    ```
 4. Run the executable:
    ```sh
-   ./snake_game.exe
+   ./Snake_game.exe
    ```
 
 ## How to Play
